@@ -1,12 +1,30 @@
+/* 上海工程技术大学硕士学位论文Typst模板 */
 #import "thesis.typ":*
-= 绪论
-= 排版数学公式
-这个章节主要介绍的是Typst的数学排版公式的问题，Typst具有较方便的数学排版功能，可以排版各种复杂的数学公式，这里主要介绍一些基本的数学公式排版方法，以及一些常用的数学符号的输入方法。
 
-Typst中的数学公式也分为两种形式，一种是行内公式，一种是行间公式。
-行内公式是指在正文中插入数学公式，例如$E = m c^2$，行间公式是指单独的一行显示数学公式，例如我们这里写出了一个行间公式，麦克斯韦方程组：
+// 论文封面
+// 原创性声明
+// 授权说明书
+// 中文摘要和英文摘要
+// 插入目录
+// 符号及缩略词说明
 
-$ nabla dot bold(E) = rho / epsilon_0 $
-
-$ nabla dot bold(B) = 0 $
-
+// 第一章
+#include "chapters/ch01.typ"
+// 第二章
+#include "chapters/ch02.typ"
+// 第三章
+#include "chapters/ch03.typ"
+// 第四章
+#include "chapters/ch04.typ"
+// 第五章
+#include "chapters/ch05.typ"
+// 第六章
+#include "chapters/ch06.typ"
+// 参考文献
+#include "chapters/ref.typ"
+// 附录
+#include "chapters/appendix.typ"
+// 攻读硕士学位期间发表的学术论文
+#include "chapters/achievements.typ"
+// 致谢
+#include "chapters/thanks.typ"
