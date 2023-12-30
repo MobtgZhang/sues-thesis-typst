@@ -3,6 +3,9 @@
 #import "../functions/hline.typ": *
 #import "../../info.typ": *
 
+
+#set align(center + horizon)
+
 #box(
   grid(
     columns: (auto, auto),

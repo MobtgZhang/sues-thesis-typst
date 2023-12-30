@@ -4,6 +4,8 @@
 #import "../../info.typ": *
 #import "../functions/style.typ": *
 
+#set align(center + horizon)
+
 #box(
   grid(
     columns: (auto, auto),
@@ -12,8 +14,8 @@
   )
 )
 #linebreak()
-#v(1em)
-#text("本科生毕业论文（设计）", font: fontstypedict.宋体, size: fontsizedict.小初, weight: "semibold", fill: emphcolor)
+#v(2em)
+#text("本科生毕业设计论文", font: fontstypedict.宋体, size: fontsizedict.小初, weight: "semibold", fill: emphcolor)
 #hline(thickness: 3pt)
 #v(-1em)
 #hline(thickness: 1.2pt)
