@@ -18,4 +18,6 @@
 
 #appendix()
 
+#include "chapters/appendix.typ"
+
 #bibliography(("references.bib"),style: "ieee")

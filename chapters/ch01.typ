@@ -127,7 +127,7 @@ Typst 中的标题使用 `=` 表示，其后跟着标题的内容。`=` 的数�
   ],
   ```typ
 #figure(
-  image("images/chapter1/1-writing-app.png", width: 100%),
+  image("figures/1-writing-app.png", width: 100%),
   caption: "Typst 网页版界面",
 ) <web>
 ```,
@@ -139,13 +139,12 @@ Typst 中的标题使用 `=` 表示，其后跟着标题的内容。`=` 的数�
 ]
 )\
 
-@web 展示了 Typst 网页版的界面。更多有关内容，可以参考about。developers 中介绍了 Typst 的主要开发者。代码中的 `<web>` 是这一图片的标签，可以在文中通过 `@web` 来引用。
+@web 展示了 Typst 网页版的界面。更多有关内容，可以参考 @about。@developers 中介绍了 Typst 的主要开发者。代码中的 `<web>` 是这一图片的标签，可以在文中通过 `@web` 来引用。
 
 == 表格
 
 在 Typst 中，定义表格的默认方式是 `table` 函数。但如果需要给表格增加标题，或者在文章中引用表格，则需要将其放置在 `figure` 中，就像下面这样：
 #let 学校="上海工程技术大学"
-
 #tablex(
   columns: (1fr, 1fr),
   [
@@ -173,7 +172,6 @@ Typst 中的标题使用 `=` 表示，其后跟着标题的内容。`=` 的数�
   caption: "答辩委员会名单",
 ) <table>
 ```,
-
     caption: "默认表格",
   ),
   [

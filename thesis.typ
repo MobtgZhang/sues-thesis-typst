@@ -12,13 +12,93 @@
     // 定义纸张类型和页眉页脚
     set page(
         "a4",
-        header:locate(loc => {
-
+        header: locate(loc => {
+        [
+            #set text(fontsizedict.五号, font: fontstypedict.宋体)
+            #set align(center)
+            #if partcounter.at(loc).at(0) < 10 {
+            // Handle the first page of Chinese abstract specailly
+            let headings = query(selector(heading).after(loc), loc)
+            let next_heading = if headings == () {
+                ()
+            } else {
+                headings.first().body.text
+            }
+            if next_heading == "摘要" and calc.odd(loc.page()) {
+                [
+                #text(
+                    "上海工程技术大学硕士学位论文"+h(1fr)+master_chinese_title
+                )
+                #v(-0.8em)
+                #line(length: 100%)
+                ]
+            }
+            } else if partcounter.at(loc).at(0) > 20 {
+            } else {
+            if calc.even(loc.page()) {
+                [
+                    #text(
+                        "上海工程技术大学硕士学位论文"+h(1fr)+master_chinese_title
+                    )
+                    #v(-0.8em)
+                    #line(length: 100%,stroke: 2pt + black,)
+                    #v(-10pt)
+                    #line(length: 100%,stroke: 1pt + black,)
+                ]
+            } else {
+                let footers = query(selector(<__footer__>).after(loc), loc)
+                let elems = if footers == () {
+                ()
+                } else {
+                query(
+                    heading.where(level: 1).before(footers.first().location()), footers.first().location()
+                )
+                }
+                if elems == () {
+                } else {
+                    let el = elems.last()
+                    /*
+                    #let grad = gradient.linear((black, 0%),(black, 50%),(white, 50%),(white, 75%), (black, 75%),(black, 100%), dir: ttb)
+#rect(fill: grad, width: 100%, height: 6pt)
+                    
+                    */
+                    text("上海工程技术大学硕士学位论文"+h(1fr)+master_chinese_title)
+                    v(-0.8em)
+                    line(length: 100%,stroke: 2pt + black,)
+                    v(-10pt)
+                    line(length: 100%,stroke: 1pt + black,)
+                }
+            }
+            }
+        ]
         }),
-        footer: locate(loc =>{
-
+        footer: locate(loc => {
+        [
+            #set text(fontsizedict.五号)
+            #set align(center)
+            #if query(selector(heading).before(loc), loc).len() < 2 or query(selector(heading).after(loc), loc).len() == 0 {
+            // Skip cover, copyright and origin pages
+            } else {
+            let headers = query(selector(heading).before(loc), loc)
+            let part = partcounter.at(headers.last().location()).first()
+            [
+                #if part < 20 {
+                    numbering("I", counter(page).at(loc).first())
+                    
+                } else {
+                    v(-0.8em)
+                    line(length: 100%,stroke: 1pt + black,)
+                    v(-10pt)
+                    line(length: 100%,stroke: 2pt + black,)
+                    "第"+str(counter(page).at(loc).first())+"页"
+                }
+            ]
+            }
+            #label("__footer__")
+        ]
         }),
     )
+
     // 定义插入的方程格式
     set math.equation(
         numbering: (..nums) => locate(loc => {
@@ -35,7 +115,7 @@
     set enum(indent: 2em)
     // 定义字体格式
     show strong: it => text(font: fontstypedict.黑体,weight: "semibold" ,it.body)
-    show emph: it => text(font: fontstypedict.楷体,weight: "italic" ,it.body)
+    show emph: it => text(font: fontstypedict.楷体,style: "italic" ,it.body)
     show par: set block(spacing: linespacing)
     show raw: set text(font: fontstypedict.代码)
     // 定义三级标题格式
@@ -55,14 +135,14 @@
         ]
         // 一级标题
         #if it.level == 1 {
-            if not it.body.text in ("ABSRACT","学位论文使用授权说明") {
+            if not it.body.text in ("ABSTRACT", "学位论文使用授权说明")  {
                 pagebreak(weak: true)
             }
             locate(loc => {
                 if it.body.text == "摘要" {
                     partcounter.update(10)
                     counter(page).update(1)
-                } else if it.numbering != none and partcounter.at(loc).first() < 20 {
+                    } else if it.numbering != none and partcounter.at(loc).first() < 20 {
                     partcounter.update(20)
                     counter(page).update(1)
                 }
@@ -77,7 +157,7 @@
             equationcounter.update(())
 
             set align(center)
-            sizedheading(it,fontsizedict.三号)
+            sizedheading(it, fontsizedict.三号)
         } else {
             if it.level == 2 {
                 // 二级标题
@@ -100,18 +180,18 @@
         } else if it.kind == image {
             it.body
             [
-                #set text(fontsize: fontsizedict.五号)
+                #set text(size: fontsizedict.五号)
                 #it.caption
             ]
         } else if it.kind == table {
             [
-                #set text(fontsize: fontsizedict.五号)
+                #set text(size: fontsizedict.五号)
                 #it.caption
             ]
             it.body
-        } else if it.kind == code {
+        } else if it.kind == "code" {
             [
-                #set text(fontsize: fontsizedict.五号)
+                #set text(size: fontsizedict.五号)
                 #it.caption
             ]
             it.body
@@ -162,11 +242,11 @@
             } else if el.func() == heading {
                 // 处理标题的引用
                 if el.level == 1 {
-                    link(el_loc,chinesenumering(..counter(heading).at(el_loc),location: el_loc))
+                    link(el_loc,chinesenumbering(..counter(heading).at(el_loc),location: el_loc))
                 } else {
                     link(el_loc,[
                         节
-                        #chinesenumering(..counter(heading).at(el_loc),location: el_loc)
+                        #chinesenumbering(..counter(heading).at(el_loc),location: el_loc)
                     ])
                 }
             } else {
@@ -187,7 +267,11 @@
     pagebreak()
     include("src/templates/abstract-en.typ")
     pagebreak()
-    // 插入目录
+
+    // 论文字体大小
+    set align(left + top)
+    set text(fontsizedict.小四, font: fontstypedict.宋体, lang: "zh")
+    set heading(numbering: chinesenumbering)
     // 插入目录
     locate(loc => {
         chineseoutline(
@@ -242,51 +326,96 @@
     set page(
         "a4",
         header: locate(loc => {
-            [
-                #set text(fontsizedict.五号)
-                #set align(center)
-                #if partcounter.at(loc).at(0) < 10 {
-                    // 处理中文摘要页眉
-                    let headings = query(selector(heading).after(loc),loc)
-                    let next_heading = if headings == () {
-                        ()
-                    } else {
-                        headings.first().body.text
-                    }
-                    if next_heading in ("摘要","ABSTRACT"){
-                        [
-                            #text(
-                                "上海工程技术大学毕业设计（论文）"+h(1fr)+bachelor_chinese_title
-                            )
-                            #v(-0.8em)
-                            #line(length: 100%)
-                        ]
-                    }
-                    //
-                }
-            ]
-        }),
-        footer: locate(loc => {
-            [
-                #set text(fontsizedict.五号)
-                #set align(center)
-                #if query(selector(heading).before(loc), loc).len() < 2 or query(selector(heading).after(loc), loc).len() == 0 {
-                // Skip cover, copyright and origin pages
-                } else {
-                let headers = query(selector(heading).before(loc), loc)
-                let part = partcounter.at(headers.last().location()).first()
+        [
+            #set text(fontsizedict.五号)
+            #set align(center)
+            #if partcounter.at(loc).at(0) < 10 {
+            // Handle the first page of Chinese abstract specailly
+            let headings = query(selector(heading).after(loc), loc)
+            let next_heading = if headings == () {
+                ()
+            } else {
+                headings.first().body.text
+            }
+            if next_heading == "摘要" and calc.odd(loc.page()) {
                 [
-                    #if part < 20 {
-                        numbering("I", counter(page).at(loc).first())
-                    } else {
-                        str(counter(page).at(loc).first())
-                    }
+                #text(
+                    "上海工程技术大学毕业设计（论文）"+h(1fr)+bachelor_chinese_title
+                )
+                #v(-0.8em)
+                #line(length: 100%)
+                ]
+            }
+            } else if partcounter.at(loc).at(0) > 20 {
+            } else {
+            if calc.even(loc.page()) {
+                [
+                    #text(
+                        "上海工程技术大学毕业设计（论文）"+h(1fr)+bachelor_chinese_title
+                    )
+                    #v(-0.8em)
+                    #line(length: 100%)
+                ]
+            } else {
+                let footers = query(selector(<__footer__>).after(loc), loc)
+                let elems = if footers == () {
+                ()
+                } else {
+                query(
+                    heading.where(level: 1).before(footers.first().location()), footers.first().location()
+                )
+                }
+                if elems == () {
+                } else {
+                let el = elems.last()
+                [
+                    // #let numbering = if el.numbering == chinesenumbering {
+                    //   chinesenumbering(..counter(heading).at(el.location()), location: el.location())
+                    // } else if el.numbering != none {
+                    //   numbering(el.numbering, ..counter(heading).at(el.location()))
+                    // }
+                    // #if numbering != none {
+                    //   numbering
+                    //   h(0.5em)
+                    // }
+                    #text(
+                        "上海工程技术大学毕业设计（论文）"+h(1fr)+bachelor_chinese_title
+                    )
+                    #v(-0.8em)
+                    #line(length: 100%)
                 ]
                 }
-                #label("__footer__")
+            }
+            }
+        ]
+        }),
+        footer: locate(loc => {
+        [
+            #set text(fontsizedict.五号)
+            #set align(center)
+            #if query(selector(heading).before(loc), loc).len() < 2 or query(selector(heading).after(loc), loc).len() == 0 {
+            // Skip cover, copyright and origin pages
+            } else {
+            let headers = query(selector(heading).before(loc), loc)
+            let part = partcounter.at(headers.last().location()).first()
+            [
+                #if part < 20 {
+                numbering("I", counter(page).at(loc).first())
+                } else {
+                str(counter(page).at(loc).first())
+                }
             ]
+            }
+            #label("__footer__")
+        ]
         }),
     )
+
+
+
+
+
+
     // 定义插入的方程格式
     set math.equation(
         numbering: (..nums) => locate(loc => {
@@ -430,11 +559,11 @@
             } else if el.func() == heading {
                 // 处理标题的引用
                 if el.level == 1 {
-                    link(el_loc,chinesenumering(..counter(heading).at(el_loc),location: el_loc))
+                    link(el_loc,chinesenumbering(..counter(heading).at(el_loc),location: el_loc))
                 } else {
                     link(el_loc,[
                         节
-                        #chinesenumering(..counter(heading).at(el_loc),location: el_loc)
+                        #chinesenumbering(..counter(heading).at(el_loc),location: el_loc)
                     ])
                 }
             } else {
