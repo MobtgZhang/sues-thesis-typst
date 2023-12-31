@@ -8,3 +8,4 @@
 #import "outline.typ": *
 #import "style.typ": *
 #import "underline.typ": *
+#import "@preview/tablex:0.0.6": tablex

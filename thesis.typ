@@ -253,9 +253,16 @@
                     } else {
                         headings.first().body.text
                     }
-                    "上海工程技术大学毕业设计（论文）"+h(1fr)+bachelor_chinese_title
-                    v(-0.8em)
-                    line(length: 100%)
+                    if next_heading in ("摘要","ABSTRACT"){
+                        [
+                            #text(
+                                "上海工程技术大学毕业设计（论文）"+h(1fr)+bachelor_chinese_title
+                            )
+                            #v(-0.8em)
+                            #line(length: 100%)
+                        ]
+                    }
+                    //
                 }
             ]
         }),
@@ -296,7 +303,7 @@
     set enum(indent: 2em)
     // 定义字体格式
     show strong: it => text(font: fontstypedict.黑体,weight: "semibold" ,it.body)
-    show emph: it => text(font: fontstypedict.楷体,weight: "italic" ,it.body)
+    show emph: it => text(font: fontstypedict.楷体, style: "italic" ,it.body)
     show par: set block(spacing: linespacing)
     show raw: set text(font: fontstypedict.代码)
     // 定义三级标题格式
@@ -316,7 +323,7 @@
         ]
         // 一级标题
         #if it.level == 1 {
-            if not it.body.text in ("ABSRACT","学位论文使用授权说明") {
+            if not it.body.text in ("ABSTRACT","学位论文使用授权说明") {
                 pagebreak(weak: true)
             }
             locate(loc => {
@@ -361,18 +368,18 @@
         } else if it.kind == image {
             it.body
             [
-                #set text(fontsize: fontsizedict.五号)
+                #set text(size:fontsizedict.五号)
                 #it.caption
             ]
         } else if it.kind == table {
             [
-                #set text(fontsize: fontsizedict.五号)
+                #set text(size:fontsizedict.五号)
                 #it.caption
             ]
             it.body
-        } else if it.kind == code {
+        } else if it.kind == "code" {
             [
-                #set text(fontsize: fontsizedict.五号)
+                #set text(size:fontsizedict.五号)
                 #it.caption
             ]
             it.body
@@ -445,7 +452,7 @@
     // 论文字体大小
     set align(left + top)
     set text(fontsizedict.小四, font: fontstypedict.宋体, lang: "zh")
-
+    set heading(numbering: chinesenumbering)
     // 插入目录
     locate(loc => {
         chineseoutline(
