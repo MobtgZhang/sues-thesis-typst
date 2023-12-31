@@ -1,5 +1,5 @@
 // 定义行距
-#let linespacing = 1em
+#let linespacing = 1.5em
 // 定义字体的大小
 #let fontsizedict = (
   初号: 42pt,

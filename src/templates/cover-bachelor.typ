@@ -16,8 +16,9 @@
 #linebreak()
 #v(2em)
 #text("本科生毕业设计论文", font: fontstypedict.宋体, size: fontsizedict.小初, weight: "semibold", fill: emphcolor)
+
 #hline(thickness: 3pt)
-#v(-1em)
+#v(-0.8em)
 #hline(thickness: 1.2pt)
 
 #set text(fontsizedict.二号)

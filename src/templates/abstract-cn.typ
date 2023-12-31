@@ -1,6 +1,7 @@
 #import "../functions/style.typ": *
 #import "../../info.typ": *
 
+#set text(font:fontstypedict.宋体)
 #par(justify: true, first-line-indent: 2em, leading: linespacing)[
   #heading(numbering: none, outlined: false, "摘要")
   
