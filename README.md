@@ -7,7 +7,7 @@
 
 参考[Typst项目页面](https://github.com/typst/typst)的安装方式进行安装。
 
-硕士学位论文为`master.typ`，学士学位论文为`bachelor.typ`，开箱即用。
+硕士学位论文为`master.typ`，学士学位论文为`bachelor.typ`，开箱即用，目前还在开发中。
 
 ## 编译预览
 <table>
