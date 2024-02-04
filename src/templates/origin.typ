@@ -34,9 +34,9 @@
     grid(
       columns: (auto, auto,auto,auto),
       gutter: 1em,
-      "",rect(width: 9pt, height: 9pt),text("保密",weight: "semibold"),"",
+      "",rect(width: 9pt, height: 9pt),text("保密",weight: "semibold",font:fontstypedict.黑体),"",
       "本学位论文属于","",""," ，在年解密后适用本授权书。",
-      "",rect(width: 9pt, height: 9pt),text("不保密",weight: "semibold"),"",
+      "",rect(width: 9pt, height: 9pt),text("不保密",weight: "semibold",font:fontstypedict.黑体),"",
     )
   )
 )
@@ -59,3 +59,4 @@
     ),
   ),
 )
+#v(10em)

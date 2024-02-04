@@ -183,7 +183,13 @@
                 #set text(size: fontsizedict.五号)
                 #it.caption
             ]
-        } else if it.kind == table {
+        } else if it.kind == tablex {
+            [
+                #set text(size: fontsizedict.五号)
+                #it.caption
+            ]
+            it.body
+        }else if it.kind == table {
             [
                 #set text(size: fontsizedict.五号)
                 #it.caption

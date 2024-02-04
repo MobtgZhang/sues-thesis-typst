@@ -20,7 +20,7 @@
 // 中文完成日期
 #let master_chinese_finish_date_time = "2023 年 12月"
 // 论文题目
-#let master_chinese_title = "中文题目"
+#let master_chinese_title = "上海工程技术大学Typst模板"
 
 #let master_reviewer = "A评阅"
 #let master_chairman = "A主席"

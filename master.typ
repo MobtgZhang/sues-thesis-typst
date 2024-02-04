@@ -3,9 +3,9 @@
 #show: doc => sues_thesis_master(
   outlinedepth:3,
   blind: false,
-  listofimage: true,
-  listoftable: true,
-  listofcode: true,
+  listofimage: false,
+  listoftable: false,
+  listofcode: false,
   doc
 )
 
