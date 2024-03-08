@@ -1,16 +1,29 @@
 // 定义硕士学位论文模板
-// 这里定义的是硕士学位论文的一些信息，如果是本科学位论文可以不关注这一部分
 // 中文封面页信息
 //============================================================================
+#let num2month = (
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+)
 // 中文封面页信息
 // 中图分类号
 #let master_classification_num = "CXX"
 // 学号信息
 #let master_class_number = "M987654321"
 // 作者姓名
-#let master_chinese_candidate_name = "这里是作者姓名"
+#let master_chinese_candidate_name = "MobtgZhang"
 // 导师姓名
-#let master_chinese_supervisor_name = "这里是导师姓名"
+#let master_chinese_supervisor_name = "Supervisor"
 // 专业名称
 #let master_chinese_major_name = "控制科学与工程"
 // 学院名称
@@ -18,7 +31,8 @@
 // 学位名称，分工学硕士和专业硕士
 #let master_degree_name = "工学硕士"
 // 中文完成日期
-#let master_chinese_finish_date_time = "2023 年 12月"
+#let date_today = datetime.today()
+#let master_chinese_finish_date_time = str(date_today.year())+" 年" + str(date_today.month()) + "月"
 // 论文题目
 #let master_chinese_title = "上海工程技术大学Typst模板"
 
@@ -35,30 +49,8 @@
 // 专业英文名称
 #let master_english_major_name = "Control Science and Engineering"
 // 论文英文题目
-#let master_english_title = "This is an English Title"
+#let master_english_title = "The Typst Template for Shanghai University of Engineering Science"
 // 学院英文名称
-#let master_english_faculty_name = "College of Electronic and Electrical Engineering"
+#let master_english_faculty_name = "School of Electronic and Electrical Engineering"
 // 英文完成日期
-#let master_english_finish_date_time = "December 2023"
-//============================================================================
-
-// 定义本科学位论文模板
-// 这里定义的是本科学位论文的一些信息，如果是硕士学位论文可以不关注这一部分
-// 中文封面页信息
-// 论文中文题目
-#let bachelor_chinese_title = "上海工程技术大学学士学位论文Typst模板"
-// 论文英文题目
-#let bachelor_english_title = "This is an English Title"
-// 学院名称
-#let bachelor_chinese_faculty_name = "电子电气工程学院"
-// 专业名称
-#let bachelor_chinese_major_name = "计算机科学与技术"
-// 学号信息
-#let bachelor_class_number = "M987654321"
-// 作者姓名
-#let bachelor_chinese_candidate_name = "这里是作者姓名"
-// 导师姓名
-#let bachelor_chinese_supervisor_name = "这里是导师姓名"
-// 完成日期
-#let bachelor_chinese_finish_date_time = "2023 年 12月"
-//============================================================================
+#let master_english_finish_date_time = str(num2month.at(date_today.month()-1))+" "+str(date_today.year())

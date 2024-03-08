@@ -1,4 +1,4 @@
-#import "../src/functions/style.typ":fontstypedict,fontsizedict
+#import "../thesis.typ":fontstypedict,fontsizedict
 #import "@preview/tablex:0.0.6": tablex,hlinex
 
 #v(1em)
@@ -28,3 +28,5 @@
     hlinex(stroke: 1.5pt,expand:-50pt),),
   caption:"一个三线表的示例"
 )
+
+#pagebreak()

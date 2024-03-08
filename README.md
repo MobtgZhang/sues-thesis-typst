@@ -1,4 +1,4 @@
-# 上海工程技术大学学位论文Typst模板
+# 上海工程技术大学硕士学位论文Typst模板
 
 第一次接触Typst源于一次LaTeX社区推荐，突然发现一个非常好的项目，即Typst，这个项目是用Rust写的一个轻量级项目。
 相对于LaTeX，Typst较为轻量级、编译速度快，而且语法比较简单，具有用户友好的教程及文档，适合于文档开发的操作。搭配vscode typst lsp的监听修改自动编译的功能，可以即时预览编译出的pdf文件
@@ -7,13 +7,13 @@
 
 参考[Typst项目页面](https://github.com/typst/typst)的安装方式进行安装。
 
-硕士学位论文为`master.typ`，学士学位论文为`bachelor.typ`，开箱即用，目前还在开发中。
+学位论文主体为`paper.typ`，开箱即用，目前还在开发中，不适合用来进行学位论文创作。
 
 ## 编译预览
 <table>
   <tr>
-    <td><img src="imgs/master.jpg"></td>
-    <td><img src="imgs/bachelor.jpg"></td>
+    <td><img src="imgs/page1.jpg"></td>
+    <td><img src="imgs/page2.jpg"></td>
   </tr>
 </table>
 
