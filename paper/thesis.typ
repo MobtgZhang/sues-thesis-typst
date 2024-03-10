@@ -2,7 +2,7 @@
 //-------------------------------------------
 // 定义一些常见的变量
 //AutoFakeBold 常量
-#let autoFakeBold_pt = 0.45pt
+#let autoFakeBold_pt = 0.22pt
 // 定义行距
 #let linespacing = 1.5em
 // 定义字体的大小
