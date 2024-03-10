@@ -39,3 +39,5 @@ Typst是跨平台的文档标记语言，包括有Linux、MacOS和Windows环境�
 - #link("http://ai-assets.404.net.cn/pdf/typst/typst-zh_CN-20230409.pdf","Symbol符号速查表 ")；
 - #link("http://ai-assets.404.net.cn/pdf/typst/typst-zh_CN-20230409.pdf","Awesome Typst中文版")。
 
+
+
