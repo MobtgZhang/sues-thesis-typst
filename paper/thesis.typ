@@ -33,6 +33,7 @@
   楷体: ("Times New Roman", "KaiTi"),
   代码: ("New Computer Modern Mono", "Times New Roman", "SimSun"),
 )
+#let lengthceil(len, unit: fontsizedict.小四) = calc.ceil(len / unit) * unit
 // 定义一个计数器
 // 章节计数器
 #let chaptercounter = counter("chapter")
@@ -52,19 +53,18 @@
   #matter_state.update(matter => "frontmatter")
   #counter(page).update(1)
 ]
-#let mainmatter() = [
-  #matter_state.update(matter => "mainmatter")
-  #counter(page).update(1)
-]
+#let mainmatter() = {
+  matter_state.update(matter => "mainmatter")
+  //#pagebreak()
+  // 初始化
+  chaptercounter.update(1)
+  counter(page).update(0)
+}
 #let backmatter() = [
   #matter_state.update(matter => "backmatter")
-  #chaptercounter.update(0)
+  #chaptercounter.update(1)
   #counter(heading).update(0)
 ]
-
-
-// 定义一个全局表示盲审模式和正常模式的变量
-#let blind_state = state("blind",false)
 // 定义一个中文的计数函数
 #let chinesenumber(num, standalone: false) = if num < 11 {
   ("零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十").at(num)
@@ -110,6 +110,84 @@
     }
   }
 })
+
+
+// 目录
+#let chinese_outline(title:"目录",depth:none, indent:false) = {
+  set align(center)
+  grid([
+      #text("目录",fontsizedict.三号,stroke:autoFakeBold_pt,font:fontstypedict.黑体)
+      #v(1em)
+    ])
+  locate(it => {
+    let elements = query(heading.where(outlined:true).after(it),it)
+    for el in elements {
+      // 跳过没有目录或者目录深度太深的部分
+      if depth != none and el.level > depth {continue}
+
+      let maybe_num = if el.numbering != none {
+        if el.numbering == chinesenumbering {
+          chinesenumbering(..counter(heading).at(el.location()),location:el.location())
+        } else {
+          numbering(el.numbering, ..counter(heading).at(el.location()))
+        }
+        h(0.5em)
+      }
+      let line = {
+        if indent {
+          h(1em * (el.level - 1))
+        }
+        if el.level == 1 {
+          v(0.5em,weak: true)
+        }
+        if maybe_num != none {
+          style(styles => {
+            let width = measure(maybe_num, styles).width
+            box(
+              width: lengthceil(width),
+              link(el.location(), if el.level == 1 {
+                strong(maybe_num)
+              } else {
+                maybe_num
+              }
+            ))
+          })
+        }
+
+        if el.level == 1 {
+          strong(el.body)
+        } else {
+          el.body
+        }
+
+        // 目录进行加点.处理
+        // Filler dots
+        box(width: 1fr, h(10pt) + box(width: 1fr, repeat[.]) + h(10pt))
+        // Page number
+        let footer = query(selector(<__footer__>).after(el.location()), el.location())
+
+        let page_number = if footer == () {
+          0
+        } else {
+          counter(page).at(footer.first().location()).first()
+        }
+        link(el.location(), if el.level == 1 {
+          strong(str(page_number))
+        } else {
+          str(page_number)
+        })
+
+        linebreak()
+        v(-0.2em)
+      }
+      line
+    }
+  })
+  pagebreak()
+}
+// 定义一个全局表示盲审模式和正常模式的变量
+#let blind_state = state("blind",false)
+
 
 // 定义一个用于显示中文和英文摘要的函数
 #let display_abstract(load_filename,language:"中文") = {
@@ -164,25 +242,42 @@
       header: locate(loc =>{[
         #set text(font:fontstypedict.宋体,size:fontsizedict.五号)
         #set align(center)
-        #if matter_state.at(loc) == "mainmatter" {
-          text("上海工程技术大学硕士学位论文"+h(1fr)+master_chinese_title)
+        #if matter_state.at(loc) == "frontmatter" {
+
+        } else if matter_state.at(loc) == "mainmatter" {
+          locate(it =>{
+            text("上海工程技术大学硕士学位论文"+h(1fr)+"第" + chinesenumber(int(chaptercounter.display())) +"章" + h(1em)+master_chinese_title)
+          })
           v(-0.8em)
           line(length: 100%,stroke: 2pt + black,)
           v(-10pt)
           line(length: 100%,stroke: 1pt + black,)
+        } else if matter_state.at(loc) == "backmatter"{
+
+        } else if matter_state.at(loc) == "none"{
+
+        } else {
+          
         }
       ]}),
       footer: locate(loc => {[
         #set text(font:fontstypedict.宋体,size:fontsizedict.五号)
         #set align(center)
         #if matter_state.at(loc) == "mainmatter" or matter_state.at(loc) == "backmatter" {
-          v(-0.8em)
-          line(length: 100%,stroke: 1pt + black,)
-          v(-9pt)
-          line(length: 100%,stroke: 2pt + black,)
-          align(center)[#text("第"+str(counter(page).at(loc).first())+"页")]
+          if counter(page).at(loc).first()>0 {
+            v(-0.8em)
+            line(length: 100%,stroke: 1pt + black,)
+            v(-9pt)
+            line(length: 100%,stroke: 2pt + black,)
+            align(center)[#text("第"+str(counter(page).at(loc).first())+"页")]
+          }
+          
         } else if matter_state.at(loc) == "frontmatter" {
-          align(center)[#text(str(counter(page).at(loc).first()))]
+          align(center)[#numbering("I", counter(page).at(loc).first())]
+        }
+        // 标记一个标签，用于目录计数
+        #if counter(page).at(loc).first()>0{
+          label("__footer__")
         }
       ]}),
     )
@@ -203,12 +298,16 @@
     show heading: it => [
       #if it.level == 1 {
         //每章标题前空一行，以三号黑体居中打印。
+        pagebreak()
         set align(center)
         v(1em)
         set text(fontsizedict.三号,stroke:autoFakeBold_pt,font:fontstypedict.黑体)
         // “章”下空一行为“节”，
         "第" + chinesenumber(int(chaptercounter.display())) +"章" + h(1em)+it.body
         v(1em)
+        if it.numbering != none {
+            chaptercounter.step()
+        }
       } else {
             set par(first-line-indent: 0em)
             
@@ -256,8 +355,6 @@
             }
         })
     )
-    // 初始化
-    chaptercounter.update(1)
     // 论文正文
     set align(left + top)
     // 论文字体大小

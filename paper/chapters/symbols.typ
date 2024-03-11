@@ -1,6 +1,6 @@
-#import "../thesis.typ":fontstypedict,fontsizedict,autoFakeBold_pt
+#import "../thesis.typ":fontstypedict,fontsizedict,autoFakeBold_pt,matter_state
 #import "@preview/tablex:0.0.6": tablex,hlinex
-
+#matter_state.update(matter => "none")
 #v(1em)
 #align(
   center,
@@ -29,4 +29,3 @@
   caption:"一个三线表的示例"
 )
 
-#pagebreak()

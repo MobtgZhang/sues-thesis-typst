@@ -1,5 +1,5 @@
-#import "thesis.typ" as thesis
-#show: doc => thesis.sues_thesis_master(
+#import "thesis.typ":*
+#show: doc => sues_thesis_master(
   outlinedepth:3,
   blind: true,
   doc
@@ -10,14 +10,22 @@
 #include("covers/origin.typ")
 // 授权书
 #include("covers/authorization.typ")
-#thesis.frontmatter()
+#frontmatter()
 // 中文摘要和英文摘要
-#thesis.display_abstract("chapters/abstract-cn.typ",language:"中文")
-#thesis.display_abstract("chapters/abstract-en.typ",language:"英文")
+#display_abstract("chapters/abstract-cn.typ",language:"中文")
+#display_abstract("chapters/abstract-en.typ",language:"英文")
 // 目录
+// 插入目录
+#locate(loc => {
+    chinese_outline(
+      title: "目录",
+      depth: 3,
+      indent: true,
+    )
+})
 // 符号说明表
 #include("chapters/symbols.typ")
-#thesis.mainmatter()
+#mainmatter()
 // 正文
 #include("chapters/ch01.typ")
 #include("chapters/ch02.typ")
@@ -25,7 +33,7 @@
 #include("chapters/ch04.typ")
 #include("chapters/ch05.typ")
 #include("chapters/ch06.typ")
-#thesis.backmatter()
+#backmatter()
 // 参考文献
 // 附录
 #include("chapters/appendix.typ")
